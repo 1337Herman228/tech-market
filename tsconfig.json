@@ -24,10 +24,10 @@
     ],
     "paths": {
       "@/*": [
-        "./*"
+        "./src/*"
       ],
       "@payload-config": [
-        "./src/payload/payload.config.ts"
+        "./src/shared/api/payload/payload.config.ts"
       ]
     }
   },

@@ -12,7 +12,8 @@
     "generate:importmap": "payload generate:importmap",
     "migrate:create": "payload migrate:create",
     "migrate:run": "payload migrate",
-    "migrate:fresh": "docker exec -it postgres_db psql -U postgres -c \"DROP DATABASE \\\"tech-market\\\";\" && docker exec -it postgres_db psql -U postgres -c \"CREATE DATABASE \\\"tech-market\\\";\" && rm -rf src/migrations/* && payload migrate:create --name init && payload migrate"
+    "migrate:fresh": "docker exec -it postgres_db psql -U postgres -c \"DROP DATABASE \\\"tech-market\\\";\" && docker exec -it postgres_db psql -U postgres -c \"CREATE DATABASE \\\"tech-market\\\";\" && rm -rf src/shared/api/migrations/* && payload migrate:create --name init && payload migrate",
+    "seed": "tsx src/shared/api/payload/seed.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
@@ -47,6 +48,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "prisma": "^7.4.2",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
