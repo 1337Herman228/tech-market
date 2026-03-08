@@ -1,0 +1,89 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+// ─── USER ────────────────────────────────────────────────
+// Minimal user model — auth can be NextAuth or Payload's built-in.
+// We keep users in Prisma so cart/wishlist/reviews can relate to them
+// via simple foreign keys rather than hitting Payload's API.
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+
+  cart      Cart?         // one user → one active cart
+  wishlist  Wishlist?     // one user → one wishlist
+  reviews   Review[]      // one user → many reviews
+}
+
+// ─── CART ────────────────────────────────────────────────
+// Separate Cart and CartItem so we can easily add/remove
+// individual items without touching the whole cart object.
+// Cart is 1-to-1 with User; CartItems are 1-to-many with Cart.
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String     @unique   // @unique enforces one cart per user
+  user      User       @relation(fields: [userId], references: [id])
+  items     CartItem[]
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id          String  @id @default(cuid())
+  cartId      String
+  cart        Cart    @relation(fields: [cartId], references: [id])
+  productId   String  // references Payload product ID (no FK — cross-system)
+  quantity    Int     @default(1)
+  priceAtAdd  Float   // snapshot price at time of adding — avoids stale price bugs
+
+  @@unique([cartId, productId]) // prevents duplicate product rows in same cart
+}
+
+// ─── WISHLIST ────────────────────────────────────────────
+// Same pattern as Cart but simpler — no quantity or price needed.
+model Wishlist {
+  id      String         @id @default(cuid())
+  userId  String         @unique
+  user    User           @relation(fields: [userId], references: [id])
+  items   WishlistItem[]
+}
+
+model WishlistItem {
+  id          String   @id @default(cuid())
+  wishlistId  String
+  wishlist    Wishlist @relation(fields: [wishlistId], references: [id])
+  productId   String   // again, Payload ID — no DB-level FK needed
+
+  @@unique([wishlistId, productId])
+}
+
+// ─── REVIEWS ─────────────────────────────────────────────
+// Reviews live in Prisma (not Payload) because they're user-generated,
+// need moderation flags, and benefit from aggregation queries (AVG rating).
+// productId links back to Payload's product — stored as a plain string.
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  productId String   // Payload product ID
+  rating    Int      // 1–5, validated at app level
+  title     String?
+  body      String
+  verified  Boolean  @default(false)  // "verified purchase" flag
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId]) // one review per user per product
+}
