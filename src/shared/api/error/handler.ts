@@ -19,15 +19,21 @@ export function handleApiError(error: unknown) {
                 }
             }
 
-            toast.error(firstError.message)
+            toast.error(firstError.message, {
+                position: 'top-right'
+            })
             return
         }
     }
 
     if (error instanceof Error) {
-        toast.error(error.message)
+        toast.error(error.message, {
+            position: 'top-right'
+        })
         return
     }
 
-    toast.error("An unexpected error occurred. Please try again.")
+    toast.error("An unexpected error occurred. Please try again.", {
+        position: 'top-right'
+    })
 }

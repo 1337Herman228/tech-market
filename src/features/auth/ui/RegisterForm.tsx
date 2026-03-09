@@ -42,10 +42,10 @@ export function RegisterForm() {
     }
 
     return (
-        <div className="rounded-2xl border border-border/60 bg-card px-8 py-10 shadow-xl shadow-black/5 dark:shadow-black/30">
+        <div className="rounded-2xl border border-border/60 dark:border-white/10 bg-card dark:bg-zinc-950/50 dark:backdrop-blur-xl px-8 py-10 shadow-xl shadow-black/5 dark:shadow-black/40">
             {/* Header */}
             <div className="mb-8 text-center">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 dark:bg-primary/20">
                     <UserRound className="h-5 w-5 text-primary" />
                 </div>
                 <h1 className="text-2xl font-semibold tracking-tight text-foreground">
