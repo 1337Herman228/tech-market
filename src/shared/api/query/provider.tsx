@@ -1,7 +1,8 @@
 "use client"
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { QueryClient, QueryClientProvider, MutationCache, QueryCache } from "@tanstack/react-query"
 import { useState, type ReactNode } from "react"
+import { handleApiError } from "@/shared/api/error/handler"
 
 interface QueryProviderProps {
     children: ReactNode
@@ -17,6 +18,12 @@ export function QueryProvider({ children }: QueryProviderProps) {
                         retry: 1,
                     },
                 },
+                queryCache: new QueryCache({
+                    onError: handleApiError,
+                }),
+                mutationCache: new MutationCache({
+                    onError: handleApiError,
+                }),
             }),
     )
 
