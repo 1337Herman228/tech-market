@@ -2,7 +2,7 @@ import { LoginForm } from "@/features/auth"
 
 export default function LoginPage() {
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background via-muted/30 to-background px-4">
+        <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-background via-muted/30 to-background px-4">
             {/* Decorative blobs */}
             <div
                 aria-hidden

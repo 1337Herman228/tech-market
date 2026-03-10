@@ -3,7 +3,7 @@ import { RegisterForm } from "@/features/auth"
 
 export default function RegisterPage() {
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background via-muted/30 to-background px-4 py-12">
+        <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-background via-muted/30 to-background px-4 py-12">
             {/* Decorative blobs */}
             <div
                 aria-hidden
